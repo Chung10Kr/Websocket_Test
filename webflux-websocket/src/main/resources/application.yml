@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: webflux-websocke
+  main:
+    banner-mode: "OFF"
+
+server:
+  port: 8001
+
+sample:
+  path: /ws/message

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- 채팅 영역 -->
+<form>
+    <input onclick="clearLog()" value="Clear" type="button">
+</form>
+<br />
+<!-- 서버와 메시지를 주고 받는 콘솔 텍스트 영역 -->
+<textarea id="messageTextArea" rows="50" cols="50" style="width:100%" disabled="disabled"></textarea>
+<script type="text/javascript">
+    // 서버의 broadsocket의 서블릿으로 웹 소켓을 한다.
+    let webSocket = new WebSocket("ws://192.168.45.129:8080/textWebsocket");
+
+    // 콘솔 텍스트 영역
+    let messageTextArea = document.getElementById("messageTextArea");
+    // 접속이 완료되면
+    webSocket.onopen = function(message) {
+        // 콘솔에 메시지를 남긴다.
+        messageTextArea.value += "Server connect done...\n";
+    };
+    // 접속이 끝기는 경우는 브라우저를 닫는 경우이기 떄문에 이 이벤트는 의미가 없음.
+    webSocket.onclose = function(message) {
+        console.log("onClose")
+        console.log( message )
+    };
+    // 에러가 발생하면
+    webSocket.onerror = function(message) {
+        console.log("onError")
+        console.log( message );
+        // 콘솔에 메시지를 남긴다.
+        messageTextArea.value += "error...\n+"+message;
+    };
+    // 서버로부터 메시지가 도착하면 콘솔 화면에 메시지를 남긴다.
+    webSocket.onmessage = function(message) {
+        //console.log(  message.data );
+
+        console.log(message.data)
+        //messageTextArea.value += "(operator) => " + message.data + "\n";
+    };
+
+    function clearLog(){
+        document.getElementById("messageTextArea").value='';
+    }
+</script>
+</body>
+</html>
