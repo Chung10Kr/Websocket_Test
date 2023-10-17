@@ -7,7 +7,6 @@ import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
-import reactor.core.publisher.Sinks;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,8 +39,4 @@ public class ServerConfiguration {
         return new WebSocketHandlerAdapter();
     }
 
-    @Bean
-    public Sinks.Many<String> sink(){
-        return Sinks.many().multicast().directBestEffort();
-    }
 }
