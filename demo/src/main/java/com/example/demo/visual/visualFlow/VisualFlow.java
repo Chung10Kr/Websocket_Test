@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.java_websocket.client.WebSocketClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -13,30 +13,26 @@ import reactor.core.publisher.Signal;
 
 import java.lang.management.ManagementFactory;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
+@Component
 public class VisualFlow {
 
-    private MyTextWebSocketHandler webSocketHandler;
+    private final WebSocketClient webSocketClient;
 
-    private String requestId;
-    private String callClass;
-    private String processId;
-
-    public VisualFlow(){
-        this.callClass = getCallClass();
-        this.processId = getProcessId();
-        this.webSocketHandler = new MyTextWebSocketHandler();
-    }
-    public VisualFlow(String requestId){
-        this.requestId = requestId;
-        this.callClass = getCallClass();
-        this.processId = getProcessId();
-        this.webSocketHandler = new MyTextWebSocketHandler();
+    public VisualFlow(WebSocketClient webSocketClient){
+        this.webSocketClient = webSocketClient;
     }
 
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
+    public Map<String,Object> getStatus(String requestId) {
+        Map<String,Object> res = new HashMap<>();
+        res.put("requestId" , requestId == null ? getClientIP() : requestId);
+        res.put("callClass" , getCallClass());
+        res.put("processId" , getProcessId());
+        return res;
     }
 
     private ObjectMapper objectMapper = new ObjectMapper()
@@ -44,38 +40,32 @@ public class VisualFlow {
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
 
-    public void collectData(FlowType flowType, String label, Object value){
-        if( this.requestId == null ){
-            return;
-        }
+    public void collectData(Map<String,Object> option, FlowType flowType, String label, Object value){
 
-        Flow flow = setFlow(flowType,label,value);
+        Flow flow = setFlow(option,flowType,label,value);
         sendData(flow);
     }
 
-    public void collectData(Signal signal,String label){
-        if( this.requestId == null ){
-            return;
-        }
+    public void collectData(Map<String,Object> option, Signal signal,String label){
 
         Flow flow = new Flow();
         if (signal.isOnNext()){
-            flow = setFlow(FlowType.DATA , label , signal.get() );
+            flow = setFlow(option,FlowType.DATA , label , signal.get() );
         }else if (signal.isOnError()){
-            flow = setFlow(FlowType.ERROR , label , signal.getThrowable().getMessage() );
+            flow = setFlow(option,FlowType.ERROR , label , signal.getThrowable().getMessage() );
         }
         sendData(flow);
     }
 
 
-    public Flow setFlow(FlowType flowType, String label,Object v){
+    public Flow setFlow(Map<String,Object> option, FlowType flowType, String label,Object v){
         Flow flow = new Flow();
         flow.setDataType(flowType);
-        flow.setRequestId( this.requestId );
+        flow.setRequestId(option.get("requestId").toString());
 
         flow.setLocalTime( LocalTime.now() );
-        flow.setCallClass( this.callClass );
-        flow.setProcessId( this.processId );
+        flow.setCallClass(option.get("callClass").toString());
+        flow.setProcessId(option.get("processId").toString());
         flow.setThread_name(Thread.currentThread().getName());
         flow.setLabel(label);
         flow.setValue(String.valueOf( v ));
@@ -83,9 +73,16 @@ public class VisualFlow {
     }
 
     public void sendData(Flow flow){
+        if( flow.getRequestId() == null ) return;
+
         try{
             String jsonString = objectMapper.writeValueAsString(flow);
-            webSocketHandler.sendMessage(jsonString);
+//            webSocketClient.send(jsonString);
+
+            CompletableFuture.runAsync(() -> {
+                webSocketClient.send(jsonString);
+            });
+
         }catch (JsonProcessingException e){
 
         }
@@ -122,6 +119,5 @@ public class VisualFlow {
         }
         return null;
     }
-
 
 }

@@ -41,7 +41,8 @@
     };
     // 서버로부터 메시지가 도착하면 콘솔 화면에 메시지를 남긴다.
     webSocket.onmessage = function(message) {
-        messageTextArea.value += "(operator) => " + message.data + "\n";
+        console.log(  message.data );
+        //messageTextArea.value += "(operator) => " + message.data + "\n";
     };
     // 서버로 메시지를 발송하는 함수
     // Send 버튼을 누르거나 텍스트 박스에서 엔터를 치면 실행

@@ -26,11 +26,12 @@ public class ServerLogic {
     }
 
     private void sendToOtherClients(String senderId, String message) {
-        sessions.entrySet().stream()
+        sessions.entrySet()
+                //.stream()
+                .parallelStream()
                 .filter(entry -> !entry.getKey().equals(senderId))
                 .forEach(entry ->
                         entry.getValue().send(Mono.just(entry.getValue().textMessage(message))).subscribe());
     }
-
 
 }

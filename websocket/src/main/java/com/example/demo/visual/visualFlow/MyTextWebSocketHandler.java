@@ -31,12 +31,6 @@ public class MyTextWebSocketHandler extends TextWebSocketHandler {
             }
         });
     }
-    public void sendMessage(String textMessage){
-        TextMessage message = new TextMessage(textMessage);
-        CLIENTS.entrySet().forEach( arg->{
-           sendMessageToClient(arg.getValue(),message);
-        });
-    }
     public void sendMessageToClient(WebSocketSession session,TextMessage message){
         try {
             synchronized (session) {
