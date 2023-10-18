@@ -944,7 +944,7 @@
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="webflux-websocket" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <stringProp name="LoopController.loops">5</stringProp>
+          <stringProp name="LoopController.loops">1</stringProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">100</stringProp>
@@ -1006,11 +1006,30 @@
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
+        <eu.luminis.jmeter.wssampler.PingPongSampler guiclass="eu.luminis.jmeter.wssampler.PingPongSamplerGui" testclass="eu.luminis.jmeter.wssampler.PingPongSampler" testname="webflux-Ping/Pong" enabled="true">
+          <stringProp name="type">PingPong</stringProp>
+          <stringProp name="readTimeout">6000</stringProp>
+        </eu.luminis.jmeter.wssampler.PingPongSampler>
+        <hashTree/>
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="webflux-request-response" enabled="true">
+          <boolProp name="createNewConnection">false</boolProp>
+          <boolProp name="TLS">false</boolProp>
+          <stringProp name="server"></stringProp>
+          <stringProp name="port">80</stringProp>
+          <stringProp name="path"></stringProp>
+          <stringProp name="connectTimeout">20000</stringProp>
+          <boolProp name="binaryPayload">false</boolProp>
+          <stringProp name="requestData">Bye</stringProp>
+          <stringProp name="readTimeout">6000</stringProp>
+          <boolProp name="loadDataFromFile">false</boolProp>
+          <stringProp name="dataFile"></stringProp>
+        </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="websocket" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <stringProp name="LoopController.loops">5</stringProp>
+          <stringProp name="LoopController.loops">1</stringProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">100</stringProp>
@@ -1071,6 +1090,25 @@
           </objProp>
           <stringProp name="filename"></stringProp>
         </ResultCollector>
+        <hashTree/>
+        <eu.luminis.jmeter.wssampler.PingPongSampler guiclass="eu.luminis.jmeter.wssampler.PingPongSamplerGui" testclass="eu.luminis.jmeter.wssampler.PingPongSampler" testname="WebSocket Ping/Pong" enabled="true">
+          <stringProp name="type">PingPong</stringProp>
+          <stringProp name="readTimeout">6000</stringProp>
+        </eu.luminis.jmeter.wssampler.PingPongSampler>
+        <hashTree/>
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="WebSocket request-response Sampler" enabled="true">
+          <boolProp name="createNewConnection">false</boolProp>
+          <boolProp name="TLS">false</boolProp>
+          <stringProp name="server"></stringProp>
+          <stringProp name="port">80</stringProp>
+          <stringProp name="path"></stringProp>
+          <stringProp name="connectTimeout">20000</stringProp>
+          <boolProp name="binaryPayload">false</boolProp>
+          <stringProp name="requestData">Bye</stringProp>
+          <stringProp name="readTimeout">6000</stringProp>
+          <boolProp name="loadDataFromFile">false</boolProp>
+          <stringProp name="dataFile"></stringProp>
+        </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
       </hashTree>
     </hashTree>
