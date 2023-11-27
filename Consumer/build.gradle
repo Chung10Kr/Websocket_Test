@@ -21,12 +21,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-	// Client Websocket
+	// visual에 필요한거 start
 	implementation 'org.java-websocket:Java-WebSocket:1.5.4'
 	implementation group: 'org.json', name: 'json', version: '20160810'
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
-
-	// Server Websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-integration'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
@@ -37,6 +34,16 @@ dependencies {
 	implementation 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 
+	// Client Websocket
+	implementation 'org.java-websocket:Java-WebSocket:1.5.4'
+	implementation group: 'org.json', name: 'json', version: '20160810'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+
+	// Server Websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.15.2'
 
 	annotationProcessor 'org.projectlombok:lombok'
 
